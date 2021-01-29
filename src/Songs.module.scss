@@ -1,0 +1,11 @@
+@import "variables";
+
+.list {
+  display: flex;
+  flex-direction: column;
+  height: inherit;
+  padding: 20px;
+  background-color: $bgColor;
+  color: rgb(255, 255, 255);
+  overflow: scroll;
+}

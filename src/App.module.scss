@@ -1,23 +1,13 @@
-$border-radius: 20px;
-
-$primary: #709fdc;
-$base: #071739;
-$shadow-color: #274684;
-$lighter-shadow: rgba($shadow-color, 0.7);
-$white: #fff;
-$gray: #8c8c8c;
-$lighter-gray: rgba($gray, 0.1);
-$time-line-width: 240px;
-$transition: 0.3s all ease;
+@import "variables";
 
 body {
-  font-family: "Rubik", sans-serif;
-  color: $base;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  background: #000;
+  // font-family: "Rubik", sans-serif;
+  // color: $base;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  // flex-direction: column;
+  // background: #000;
   h1 {
     font-size: 36px;
     margin-bottom: 0;

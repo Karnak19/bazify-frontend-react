@@ -5,6 +5,8 @@ import { ReactQueryDevtools } from "react-query/devtools";
 
 import Router from "./Router";
 
+import "./index.scss";
+
 const queryClient = new QueryClient();
 
 function App() {

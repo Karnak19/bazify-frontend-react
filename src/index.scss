@@ -1,0 +1,70 @@
+@import "variables";
+
+body {
+  margin: 0;
+
+  #timeline {
+    position: relative;
+    margin: 0 auto;
+    width: $time-line-width;
+    height: 10px;
+    background: $primary;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      .hover-playhead {
+        opacity: 1;
+        &::before {
+          opacity: 1;
+        }
+        &::after {
+          opacity: 1;
+        }
+      }
+    }
+    #playhead {
+      position: relative;
+      z-index: 2;
+      width: 0;
+      height: 10px;
+      border-radius: 5px;
+      background: $base;
+    }
+    .hover-playhead {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      width: 0;
+      height: 10px;
+      opacity: 0;
+      border-radius: 5px;
+      background: $shadow-color;
+      transition: opacity 0.3s;
+      &::before {
+        opacity: 0;
+        content: attr(data-content);
+        display: block;
+        position: absolute;
+        top: -30px;
+        right: -23px;
+        width: 40px;
+        padding: 3px;
+        text-align: center;
+        color: white;
+        background: $shadow-color;
+        border-radius: calc(#{$border-radius} - 12px);
+      }
+      &::after {
+        opacity: 0;
+        content: "";
+        display: block;
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        border-top: 8px solid $shadow-color;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+      }
+    }
+  }
+}
