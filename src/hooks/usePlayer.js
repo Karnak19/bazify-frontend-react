@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 /**
  *
  * @param {object} object DOM references
@@ -9,6 +11,12 @@ export default function usePlayer(
   { musics, index, pause },
   { setCurrentTime, setIndex, setPause }
 ) {
+  const [musicsState, setMusicsState] = useState(null);
+
+  useEffect(() => {
+    setMusicsState(musics);
+  }, [musics]);
+
   const timeUpdate = () => {
     const duration = playerRef.current.duration;
     const timelineWidth =
@@ -36,6 +44,12 @@ export default function usePlayer(
   };
 
   const nextSong = () => {
+    console.log({
+      musics,
+      musicsState,
+      index,
+    });
+
     setIndex((index + 1) % musics.length);
     updatePlayer();
     if (pause) {

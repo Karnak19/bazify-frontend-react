@@ -1,23 +1,14 @@
-import styles from "./Song.module.scss";
+import styles from "./styles/Song.module.scss";
 
-function Song({
-  keyProp,
-  album,
-  artist,
-  duration,
-  id,
-  s3_link,
-  title,
-  clickAudio,
-}) {
+function Song({ song }) {
   return (
-    <div className={styles.song} onClick={() => clickAudio(keyProp)}>
-      <img src={album.picture} alt={album.title} />
+    <div className={styles.song} onClick={() => {}}>
+      <img src={song.album.picture} alt={song.album.title} />
       <div>
-        <p className={styles.title}>{title}</p>
-        <p className={styles.subtitle}>{artist.name}</p>
+        <p className={styles.title}>{song.title}</p>
+        <p className={styles.subtitle}>{song.artist.name}</p>
       </div>
-      <div className={styles.duration}>{duration}</div>
+      <div className={styles.duration}>{song.duration}</div>
     </div>
   );
 }

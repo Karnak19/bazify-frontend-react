@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import styles from "./Player.module.scss";
+import styles from "./styles/Player.module.scss";
 
 function CurrentSong({
   playerRef,
@@ -29,6 +29,10 @@ function CurrentSong({
       navigator.mediaSession.setActionHandler("previoustrack", prevSong);
       navigator.mediaSession.setActionHandler("nexttrack", nextSong);
     }
+  }, [currentSong]);
+
+  useEffect(() => {
+    playerRef.current.load();
   }, [currentSong]);
 
   return (
