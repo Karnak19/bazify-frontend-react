@@ -4,8 +4,9 @@ import { BiPlay, BiPause, BiSkipNext, BiSkipPrevious } from 'react-icons/bi';
 
 import { Song } from './interfaces/CurrentSong';
 import usePlay from './hooks/usePlay';
-import styles from './styles/Player.module.scss';
 import useMediaSession from './hooks/useMediaSession';
+
+import styles from './styles/Player.module.scss';
 
 interface IProps {
   currentSong: Song;
@@ -13,7 +14,7 @@ interface IProps {
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function CurrentSong({ currentSong, isPlaying, setIsPlaying }: IProps) {
+function CurrentPlaying({ currentSong, isPlaying, setIsPlaying }: IProps) {
   const player = useRef<HTMLVmPlayerElement>(null);
 
   useEffect(() => {
@@ -64,4 +65,4 @@ function CurrentSong({ currentSong, isPlaying, setIsPlaying }: IProps) {
   );
 }
 
-export default CurrentSong;
+export default CurrentPlaying;

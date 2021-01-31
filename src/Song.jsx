@@ -1,5 +1,7 @@
 import { useContext } from 'react';
+
 import { songContext } from './contexts/song';
+
 import styles from './styles/Song.module.scss';
 
 const Song = ({ song }) => {

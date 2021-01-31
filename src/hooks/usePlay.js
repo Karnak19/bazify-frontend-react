@@ -1,6 +1,6 @@
 import { useContext } from 'react';
+
 import { songContext } from '../contexts/song';
-import { Song } from '../interfaces/CurrentSong';
 
 export default function usePlay() {
   const { musics, currentSong, setCurrentSong } = useContext(songContext);
@@ -17,7 +17,7 @@ export default function usePlay() {
     setCurrentSong(musics[findIndex() - 1]);
   };
 
-  const selectSong = (song: Song) => {
+  const selectSong = (song) => {
     setCurrentSong(song);
   };
 

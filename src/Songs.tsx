@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { Song as ISong } from './interfaces/CurrentSong';
 import Song from './Song';
 
@@ -8,7 +7,7 @@ interface IProps {
   musics: ISong[];
 }
 
-const Songs = memo(({ musics }: IProps) => {
+const Songs = ({ musics }: IProps) => {
   return (
     <div className={styles.list}>
       {musics?.map((music, key = 0) => {
@@ -16,6 +15,6 @@ const Songs = memo(({ musics }: IProps) => {
       })}
     </div>
   );
-});
+};
 
 export default Songs;
