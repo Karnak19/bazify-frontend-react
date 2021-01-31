@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Audio, Player } from '@vime/react';
-import { BiPlay, BiPause, BiSkipNext, BiSkipPrevious } from 'react-icons/bi';
+import { FaPlay, FaPause, FaAngleDoubleRight, FaAngleDoubleLeft } from 'react-icons/fa';
 
 import { Song } from './interfaces/CurrentSong';
 import usePlay from './hooks/usePlay';
@@ -15,15 +15,19 @@ interface IProps {
 }
 
 function CurrentPlaying({ currentSong, isPlaying, setIsPlaying }: IProps) {
+  const [volume, setVolume] = useState(10);
   const player = useRef<HTMLVmPlayerElement>(null);
-
-  useEffect(() => {
-    console.log('render !');
-  });
 
   const { nextSong, prevSong } = usePlay();
 
   useMediaSession();
+
+  const musicEnded = (e: CustomEvent) => {
+    if (e.detail) {
+      nextSong();
+      setIsPlaying(true);
+    }
+  };
 
   const playOrPause = () => {
     if (isPlaying) {
@@ -34,9 +38,16 @@ function CurrentPlaying({ currentSong, isPlaying, setIsPlaying }: IProps) {
     setIsPlaying((state) => !state);
   };
 
+  const haha = (e: CustomEvent) => {
+    if (e.detail) {
+      setIsPlaying(true);
+      player.current?.play();
+    }
+  };
+
   return (
     <div className={styles.currentSong}>
-      <Player ref={player}>
+      <Player ref={player} volume={volume} onVmPlaybackEnded={musicEnded} onVmPlaybackReady={haha}>
         <Audio>
           <source data-src={currentSong.s3_link} type="audio/mpeg" />
           Your browser does not support the audio element.
@@ -50,14 +61,18 @@ function CurrentPlaying({ currentSong, isPlaying, setIsPlaying }: IProps) {
           </div>
         </div>
         <div className={styles.controls}>
+          <div>
+            <h1 style={{ textAlign: 'center' }}>{volume}</h1>
+            <input type="range" value={volume} min={0} max={50} step={5} onChange={(e) => setVolume(+e.target.value)} />
+          </div>
           <button className={styles.prev} onClick={prevSong}>
-            <BiSkipPrevious />
+            <FaAngleDoubleLeft size={50} />
           </button>
           <button className={styles.play} onClick={playOrPause}>
-            {isPlaying ? <BiPause /> : <BiPlay />}
+            {isPlaying ? <FaPause size={50} /> : <FaPlay size={50} />}
           </button>
           <button className={styles.next} onClick={nextSong}>
-            <BiSkipNext />
+            <FaAngleDoubleRight size={50} />
           </button>
         </div>
       </div>
