@@ -1,11 +1,11 @@
-@import "variables";
+@import 'variables';
 
 .container {
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column-reverse;
-  font-family: "Cabin", sans-serif;
+  font-family: 'Cabin', sans-serif;
 
   .currentSong {
     display: flex;
@@ -44,7 +44,6 @@
     .playing {
       display: flex;
       flex-direction: row;
-      background-color: $bgColor;
 
       @media screen and (max-width: 900px) {
         flex-direction: column;
@@ -54,6 +53,31 @@
       .controls {
         display: flex;
         justify-content: space-evenly;
+
+        button.play {
+          height: 180px;
+          width: 180px;
+          border-radius: 50%;
+          background-color: #eba0ca;
+          border: none;
+          &:hover {
+            background-color: #cc5197;
+            transition: $transition;
+          }
+        }
+
+        button.prev,
+        button.next {
+          height: 140px;
+          width: 140px;
+          border-radius: 50%;
+          background-color: #eba0ca;
+          border: none;
+          &:hover {
+            background-color: #cc5197;
+            transition: $transition;
+          }
+        }
       }
 
       .timeline {

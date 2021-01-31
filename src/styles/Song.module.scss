@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .song {
   display: flex;
@@ -12,6 +12,11 @@
 
   background-color: $lighter-bgColor;
 
+  &:hover {
+    background-color: rgba($lighter-bgColor, 0.5);
+    cursor: pointer;
+  }
+
   img {
     min-width: 30px;
     min-height: 30px;
@@ -24,7 +29,7 @@
   p {
     margin: 0;
     padding-left: 15px;
-    font-family: "Chakra Petch", sans-serif;
+    font-family: 'Chakra Petch', sans-serif;
   }
 
   p.title {
@@ -39,4 +44,8 @@
   .duration {
     margin-left: auto;
   }
+}
+
+.playing {
+  border: 1px solid rgb(235, 160, 202);
 }
