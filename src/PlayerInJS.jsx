@@ -12,9 +12,7 @@ function PlayerInJS() {
   const [currentSong, setCurrentSong] = useState({});
   const [songList, setSongList] = useState([]);
 
-  const { data: musics } = useQuery('songs', getSongs, {
-    placeholderData: [{}],
-  });
+  const { data: musics, isFetched } = useQuery('songs', getSongs);
 
   const playerRef = useRef(null);
 
@@ -37,33 +35,38 @@ function PlayerInJS() {
       });
     };
 
-    setCurrentSong(musics[0]);
-
-    setSongList(transformSongDatas(musics));
+    if (isFetched) {
+      setCurrentSong(musics[0]);
+      setSongList(transformSongDatas(musics));
+    }
   }, [musics]);
 
   return (
     <songContext.Provider value={{ currentSong, setCurrentSong, musics, playIndex }}>
       <main className={styles.container}>
-        <ReactJkMusicPlayer
-          getAudioInstance={(instance) => {
-            playerRef.current = instance;
-          }}
-          audioLists={songList}
-          defaultPosition={{
-            bottom: 20,
-            left: 20,
-          }}
-          showMediaSession
-          autoPlay={false}
-          showThemeSwitch={false}
-          theme={'dark'}
-          glassBg
-          onAudioPlayTrackChange={(currentId, trackList) => {
-            const currentSong = trackList.findIndex((e) => e.id === currentId);
-            setCurrentSong(musics[currentSong - 1]);
-          }}
-        />
+        {isFetched && (
+          <ReactJkMusicPlayer
+            className={styles.chakra}
+            getAudioInstance={(instance) => {
+              playerRef.current = instance;
+            }}
+            audioLists={[...songList]}
+            defaultPosition={{
+              bottom: 20,
+              left: 20,
+            }}
+            showMediaSession
+            autoPlay={false}
+            showThemeSwitch={false}
+            theme={'dark'}
+            glassBg
+            showDownload={false}
+            onAudioPlayTrackChange={(currentId, trackList) => {
+              const currentSong = trackList.findIndex((e) => e.id === currentId);
+              setCurrentSong(musics[currentSong] || musics[0]);
+            }}
+          />
+        )}
         <Songs musics={musics} />
       </main>
     </songContext.Provider>
