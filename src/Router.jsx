@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import Player from './Player.tsx';
+// import Player from './Player.tsx';
 import PlayerInJS from './PlayerInJS';
 
 function Router() {
