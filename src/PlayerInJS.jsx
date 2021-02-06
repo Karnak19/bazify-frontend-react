@@ -39,6 +39,7 @@ function PlayerInJS() {
       setCurrentSong(musics[0]);
       setSongList(transformSongDatas(musics));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [musics]);
 
   return (
