@@ -20,7 +20,8 @@ interface IProps {
 }
 
 function CurrentPlaying({ currentSong, isPlaying, setIsPlaying }: IProps) {
-  const [volume, setVolume] = useState(10);
+  const [volume, setVolume] = useState(35);
+  const firstRender = useRef(true);
   const player = useRef<HTMLVmPlayerElement>(null);
 
   const { nextSong, prevSong } = usePlay();
@@ -43,7 +44,12 @@ function CurrentPlaying({ currentSong, isPlaying, setIsPlaying }: IProps) {
     setIsPlaying((state) => !state);
   };
 
-  const haha = (e: CustomEvent) => {
+  const playbackReady = (e: CustomEvent) => {
+    if (firstRender) {
+      firstRender.current = false;
+      return;
+    }
+
     if (e.detail) {
       setIsPlaying(true);
       player.current?.play();
@@ -56,7 +62,7 @@ function CurrentPlaying({ currentSong, isPlaying, setIsPlaying }: IProps) {
         ref={player}
         volume={volume}
         onVmPlaybackEnded={musicEnded}
-        onVmPlaybackReady={haha}
+        onVmPlaybackReady={playbackReady}
       >
         <Audio>
           <source data-src={currentSong.s3_link} type="audio/mpeg" />
