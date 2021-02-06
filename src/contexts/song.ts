@@ -6,6 +6,7 @@ interface SongContextType {
   currentSong: Song;
   musics: Song[];
   setCurrentSong: React.Dispatch<React.SetStateAction<Song>>;
+  playIndex: (index: number) => void;
 }
 
 export const songContext = createContext<SongContextType>({} as SongContextType);

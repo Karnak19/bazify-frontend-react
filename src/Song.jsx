@@ -4,16 +4,23 @@ import { songContext } from './contexts/song';
 
 import styles from './styles/Song.module.scss';
 
-const Song = ({ song }) => {
+const Song = ({ song, index }) => {
   const {
     setCurrentSong,
     currentSong: { id },
+    playIndex,
   } = useContext(songContext);
 
   const isSelected = () => (id === song.id ? styles.playing : '');
 
   return (
-    <div className={`${styles.song} ${isSelected()}`} onClick={() => setCurrentSong(song)}>
+    <div
+      className={`${styles.song} ${isSelected()}`}
+      onClick={() => {
+        playIndex(index);
+        setCurrentSong(song);
+      }}
+    >
       <img src={song.album?.picture} alt={song.album?.title} />
       <div>
         <p className={styles.title}>{song.title}</p>

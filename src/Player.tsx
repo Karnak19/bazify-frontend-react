@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import ReactJkMusicPlayer, { ReactJkMusicPlayerAudioListProps } from 'react-jinke-music-player';
 import { useQuery } from 'react-query';
 
-import CurrentPlaying from './CurrentPlaying';
 import { songContext } from './contexts/song';
 import { getSongs } from './api';
 import { Song } from './interfaces/CurrentSong';
@@ -11,29 +11,60 @@ import styles from './styles/Player.module.scss';
 
 function NewPlayer() {
   const [currentSong, setCurrentSong] = useState<Song>({} as Song);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [songList, setSongList] = useState([]);
 
   const { data: musics } = useQuery<Song[]>('songs', getSongs, {
-    placeholderData: [
-      {
-        id: '',
-        title: '',
-        s3_link: '',
-        duration: '',
-        artist: { id: '', name: '' },
-        album: { id: '', picture: '', title: '' },
-      },
-    ],
+    placeholderData: [{} as Song],
   });
 
+  const playerRef = useRef(null);
+
+  const playIndex = (index: number) => {
+    return playerRef.current.playByIndex(index);
+  };
+
   useEffect(() => {
+    const transformSongDatas = (songs: Song[]): ReactJkMusicPlayerAudioListProps[] => {
+      return songs.map((song) => {
+        const [min, sec] = (song.duration || '2:10').split(':');
+
+        return {
+          name: song.title,
+          musicSrc: song.s3_link,
+          cover: song.album?.picture,
+          singer: song.artist?.name,
+          duration: +min * 60 + +sec,
+        };
+      });
+    };
+
     setCurrentSong(musics[0]);
+
+    setSongList(transformSongDatas(musics));
   }, [musics]);
 
   return (
-    <songContext.Provider value={{ currentSong, setCurrentSong, musics }}>
+    <songContext.Provider value={{ currentSong, setCurrentSong, musics, playIndex }}>
       <main className={styles.container}>
-        <CurrentPlaying currentSong={currentSong} isPlaying={isPlaying} setIsPlaying={setIsPlaying} />
+        <ReactJkMusicPlayer
+          getAudioInstance={(instance) => {
+            playerRef.current = instance;
+          }}
+          audioLists={songList}
+          defaultPosition={{
+            bottom: 20,
+            left: 20,
+          }}
+          showMediaSession
+          autoPlay={false}
+          showThemeSwitch={false}
+          theme={'dark'}
+          glassBg
+          onAudioPlayTrackChange={(currentId, trackList) => {
+            const currentSong = trackList.findIndex((e) => e.id === currentId);
+            setCurrentSong(musics[currentSong - 1]);
+          }}
+        />
         <Songs musics={musics} />
       </main>
     </songContext.Provider>
