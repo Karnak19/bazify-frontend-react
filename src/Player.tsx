@@ -61,8 +61,8 @@ function NewPlayer() {
           theme={'dark'}
           glassBg
           onAudioPlayTrackChange={(currentId, trackList) => {
-            const currentSong = trackList.findIndex((e) => e.id === currentId);
-            setCurrentSong(musics[currentSong - 1]);
+            // const currentSong = trackList.findIndex((e) => e.id === currentId);
+            // setCurrentSong(musics[currentSong - 1]);
           }}
         />
         <Songs musics={musics} />
