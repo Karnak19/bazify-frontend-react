@@ -13,6 +13,7 @@
 
 # dev env
 .vscode/
+.eslintcache
 
 # misc
 .DS_Store
