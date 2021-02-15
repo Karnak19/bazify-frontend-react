@@ -9,6 +9,7 @@ import Songs from './Songs';
 import styles from './styles/Player.module.scss';
 
 function PlayerInJS() {
+  const [songListReady, setSongListReady] = useState(false);
   const [currentSong, setCurrentSong] = useState({});
   const [songList, setSongList] = useState([]);
 
@@ -21,31 +22,35 @@ function PlayerInJS() {
   };
 
   useEffect(() => {
-    const transformSongDatas = (songs) => {
-      return songs.map((song) => {
-        const [min, sec] = (song.duration || '2:10').split(':');
-
-        return {
-          name: song.title,
-          musicSrc: song.s3_link,
-          cover: song.album?.picture,
-          singer: song.artist?.name,
-          duration: +min * 60 + +sec,
-        };
-      });
-    };
-
     if (isFetched) {
       setCurrentSong(musics[0]);
-      setSongList(transformSongDatas(musics));
+      setSongList(
+        musics.map((song) => {
+          const [min, sec] = (song.duration || '2:10').split(':');
+
+          return {
+            name: song.title,
+            musicSrc: song.s3_link,
+            cover: song.album?.picture,
+            singer: song.artist?.name,
+            duration: +min * 60 + +sec,
+          };
+        })
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [musics]);
 
+  useEffect(() => {
+    if (songList.length > 1) {
+      setSongListReady(true);
+    }
+  }, [songList]);
+
   return (
     <songContext.Provider value={{ currentSong, setCurrentSong, musics, playIndex }}>
       <main className={styles.container}>
-        {isFetched && (
+        {songListReady && (
           <ReactJkMusicPlayer
             className={styles.chakra}
             getAudioInstance={(instance) => {
