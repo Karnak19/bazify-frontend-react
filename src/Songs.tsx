@@ -11,7 +11,7 @@ const Songs = ({ musics }: IProps) => {
   return (
     <div className={styles.list}>
       {musics?.map((music, key = 0) => {
-        return <Song song={music} index={key + 1} key={key} />;
+        return <Song song={music} index={key} key={key} />;
       })}
     </div>
   );
