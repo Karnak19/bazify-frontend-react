@@ -9,4 +9,4 @@ interface SongContextType {
   playIndex: (index: number) => void;
 }
 
-export const songContext = createContext<SongContextType>({} as SongContextType);
+export const songContext = createContext<SongContextType>(null!);
