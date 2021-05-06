@@ -1,19 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
-import ReactJkMusicPlayer, { ReactJkMusicPlayerAudioListProps } from 'react-jinke-music-player';
-import { useQuery } from 'react-query';
+import React, { useEffect, useRef, useState } from "react";
+import ReactJkMusicPlayer, {
+  ReactJkMusicPlayerAudioListProps,
+} from "react-jinke-music-player";
+import { useQuery } from "react-query";
 
-import { songContext } from './contexts/song';
-import { getSongs } from './api';
-import { Song } from './interfaces/CurrentSong';
-import Songs from './Songs';
-
-import styles from './styles/Player.module.scss';
+import { songContext } from "./contexts/song";
+import { getSongs } from "./api";
+import { Song } from "./interfaces/CurrentSong";
+import Songs from "./Songs";
 
 function NewPlayer() {
   const [currentSong, setCurrentSong] = useState<Song>({} as Song);
-  const [songList, setSongList] = useState<ReactJkMusicPlayerAudioListProps[]>([]);
+  const [songList, setSongList] = useState<ReactJkMusicPlayerAudioListProps[]>(
+    []
+  );
 
-  const { data: musics, isFetched } = useQuery<Song[]>('songs', getSongs);
+  const { data: musics, isFetched } = useQuery<Song[]>("songs", getSongs);
 
   const playerRef = useRef(null);
 
@@ -27,7 +29,7 @@ function NewPlayer() {
 
       setSongList(
         musics.map((song) => {
-          const [min, sec] = (song.duration || '2:10').split(':');
+          const [min, sec] = (song.duration || "2:10").split(":");
 
           return {
             name: song.title,
@@ -42,11 +44,13 @@ function NewPlayer() {
   }, [musics]);
 
   return (
-    <songContext.Provider value={{ currentSong, setCurrentSong, musics, playIndex }}>
-      <main className={styles.container}>
+    <songContext.Provider
+      value={{ currentSong, setCurrentSong, musics, playIndex }}
+    >
+      <main className="w-screen h-screen font-cabin">
         {isFetched && (
           <ReactJkMusicPlayer
-            className={styles.chakra}
+            className="font-chakra"
             getAudioInstance={(instance) => {
               playerRef.current = instance;
             }}
@@ -58,11 +62,13 @@ function NewPlayer() {
             showMediaSession
             autoPlay={false}
             showThemeSwitch={false}
-            theme={'dark'}
+            theme={"dark"}
             glassBg
             showDownload={false}
             onAudioPlayTrackChange={(currentId, trackList) => {
-              const currentSong = trackList.findIndex((e) => e.id === currentId);
+              const currentSong = trackList.findIndex(
+                (e) => e.id === currentId
+              );
               setCurrentSong(musics[currentSong] || musics[0]);
             }}
           />

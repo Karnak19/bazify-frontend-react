@@ -1,14 +1,14 @@
-import { StrictMode } from 'react';
-import { render } from 'react-dom';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import React, { StrictMode } from "react";
+import { render } from "react-dom";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
-import Router from './Router';
+import Router from "./Router";
 
-import 'react-jinke-music-player/assets/index.css';
-import './styles/index.scss';
+import "react-jinke-music-player/assets/index.css";
+import "./styles/index.css";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +23,6 @@ function App() {
   );
 }
 
-render(<App />, document.getElementById('root'));
+render(<App />, document.getElementById("root"));
 
 serviceWorkerRegistration.register();

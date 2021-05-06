@@ -1,6 +1,7 @@
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import Player from './Player.tsx';
+import Player from "./Player.tsx";
 
 function Router() {
   return (

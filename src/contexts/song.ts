@@ -1,6 +1,6 @@
-import React, { createContext } from 'react';
+import React, { createContext } from "react";
 
-import { Song } from '../interfaces/CurrentSong';
+import { Song } from "../interfaces/CurrentSong";
 
 interface SongContextType {
   currentSong: Song;
