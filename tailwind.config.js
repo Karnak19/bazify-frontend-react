@@ -18,6 +18,10 @@ module.exports = {
       colors: {
         ...colors,
       },
+      gridTemplateColumns: {
+        "layout-md": "200px 1fr",
+        "layout-xs": " 50px 1fr",
+      },
     },
   },
   variants: {

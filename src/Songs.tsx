@@ -1,10 +1,9 @@
 import React from "react";
 
-import { Song as ISong } from "./interfaces/CurrentSong";
 import Song from "./Song";
 
 interface IProps {
-  musics: ISong[];
+  musics: Song[];
 }
 
 const Songs = ({ musics }: IProps) => {

@@ -1,18 +1,13 @@
 import React, { StrictMode } from "react";
 import { render } from "react-dom";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import {
-  ApolloClient,
-  ApolloProvider,
-  createHttpLink,
-  InMemoryCache,
-} from "@apollo/client";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 import Router from "./Router";
-import { userContext } from "./contexts/user";
 
 import "react-jinke-music-player/assets/index.css";
 import "./styles/index.css";
+import { SongsProvider } from "./contexts/song";
 
 const token = sessionStorage.getItem("token") || localStorage.getItem("token");
 
@@ -28,7 +23,9 @@ function App() {
   return (
     <StrictMode>
       <ApolloProvider client={client}>
-        <Router />
+        <SongsProvider>
+          <Router />
+        </SongsProvider>
       </ApolloProvider>
     </StrictMode>
   );
