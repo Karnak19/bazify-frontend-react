@@ -1,24 +1,35 @@
 import React, { StrictMode } from "react";
 import { render } from "react-dom";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-
-import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+import {
+  ApolloClient,
+  ApolloProvider,
+  createHttpLink,
+  InMemoryCache,
+} from "@apollo/client";
 
 import Router from "./Router";
+import { userContext } from "./contexts/user";
 
 import "react-jinke-music-player/assets/index.css";
 import "./styles/index.css";
 
-const queryClient = new QueryClient();
+const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+
+const client = new ApolloClient({
+  uri: import.meta.env.VITE_API_URL + "/graphql",
+  cache: new InMemoryCache(),
+  headers: {
+    authorization: token ? `Bearer ${token}` : "",
+  },
+});
 
 function App() {
   return (
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
+      <ApolloProvider client={client}>
         <Router />
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-      </QueryClientProvider>
+      </ApolloProvider>
     </StrictMode>
   );
 }

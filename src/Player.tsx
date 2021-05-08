@@ -2,20 +2,21 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactJkMusicPlayer, {
   ReactJkMusicPlayerAudioListProps,
 } from "react-jinke-music-player";
-import { useQuery } from "react-query";
+import { useLazyQuery, useQuery } from "@apollo/client";
 
-import { songContext } from "./contexts/song";
-import { getSongs } from "./api";
-import { Song } from "./interfaces/CurrentSong";
-import Songs from "./Songs";
+import { GET_ALBUMS, GET_ALBUM_SONGS, GET_SONGS } from "./queries";
+import Albums from "./Albums";
 
 function NewPlayer() {
-  const [currentSong, setCurrentSong] = useState<Song>({} as Song);
   const [songList, setSongList] = useState<ReactJkMusicPlayerAudioListProps[]>(
     []
   );
 
-  const { data: musics, isFetched } = useQuery<Song[]>("songs", getSongs);
+  const { data, loading } = useQuery<{ albums: Album[] }>(GET_ALBUMS);
+  const [
+    getAlbumSongs,
+    { data: albumData, loading: albumLoading, called },
+  ] = useLazyQuery<{ album: Album }, { id: string }>(GET_ALBUM_SONGS);
 
   const playerRef = useRef(null);
 
@@ -24,58 +25,47 @@ function NewPlayer() {
   };
 
   useEffect(() => {
-    if (musics) {
-      setCurrentSong(musics[0]);
-
+    if (albumData && !albumLoading) {
+      const { album } = albumData;
       setSongList(
-        musics.map((song) => {
+        album.songs.map((song) => {
           const [min, sec] = (song.duration || "2:10").split(":");
 
           return {
             name: song.title,
             musicSrc: song.s3_link,
-            cover: song.album?.picture,
-            singer: song.artist?.name,
+            cover: album.picture,
+            singer: album.artist.name,
             duration: +min * 60 + +sec,
           };
         })
       );
     }
-  }, [musics]);
+  }, [albumData]);
 
   return (
-    <songContext.Provider
-      value={{ currentSong, setCurrentSong, musics, playIndex }}
-    >
-      <main className="w-screen h-screen font-cabin">
-        {isFetched && (
-          <ReactJkMusicPlayer
-            className="font-chakra"
-            getAudioInstance={(instance) => {
-              playerRef.current = instance;
-            }}
-            audioLists={[...songList]}
-            defaultPosition={{
-              bottom: 20,
-              left: 20,
-            }}
-            showMediaSession
-            autoPlay={false}
-            showThemeSwitch={false}
-            theme={"dark"}
-            glassBg
-            showDownload={false}
-            onAudioPlayTrackChange={(currentId, trackList) => {
-              const currentSong = trackList.findIndex(
-                (e) => e.id === currentId
-              );
-              setCurrentSong(musics[currentSong] || musics[0]);
-            }}
-          />
-        )}
-        <Songs musics={musics} />
-      </main>
-    </songContext.Provider>
+    <main className="container text-center m-auto px-5 font-cabin py-5">
+      {!loading && called && (
+        <ReactJkMusicPlayer
+          className="font-chakra"
+          getAudioInstance={(instance) => {
+            playerRef.current = instance;
+          }}
+          audioLists={songList}
+          defaultPosition={{
+            bottom: 20,
+            left: 20,
+          }}
+          showMediaSession
+          autoPlay={false}
+          showThemeSwitch={false}
+          theme={"dark"}
+          glassBg
+          showDownload={false}
+        />
+      )}
+      {!loading && <Albums albums={data.albums} handleClick={getAlbumSongs} />}
+    </main>
   );
 }
 

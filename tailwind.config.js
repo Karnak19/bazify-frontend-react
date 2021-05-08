@@ -1,3 +1,5 @@
+const colors = require("tailwindcss/colors");
+
 module.exports = {
   purge: ["./src/**/*.html", "./src/**/*.js", "./src/**/*.jx"],
   darkMode: false, // or 'media' or 'class'
@@ -12,6 +14,9 @@ module.exports = {
       },
       fontSize: {
         xxs: "10px",
+      },
+      colors: {
+        ...colors,
       },
     },
   },
