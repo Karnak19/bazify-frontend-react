@@ -26,7 +26,7 @@ function Artists({ artists, handleClick }: IProps) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-8 gap-5">
       {[...artists].sort(alphabeticalOrder).map((artist) => {
-        return <Artist {...artist} handleClick={handleClick} />;
+        return <Artist {...artist} handleClick={handleClick} key={artist.id} />;
       })}
     </div>
   );

@@ -34,7 +34,7 @@ function AlbumPage() {
   }, [albumData]);
 
   return (
-    <main className="container text-center m-auto px-5 font-cabin py-5 pb-24">
+    <main className="container text-center m-auto px-5 font-cabin py-5 pb-24 min-h-screen">
       {!loading && <Albums albums={data.albums} handleClick={getAlbumSongs} />}
     </main>
   );

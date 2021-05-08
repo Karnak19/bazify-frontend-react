@@ -26,7 +26,7 @@ function Albums({ albums, handleClick }: IProps) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-8 gap-5">
       {[...albums].sort(alphabeticalOrder).map((album) => {
-        return <Album {...album} handleClick={handleClick} />;
+        return <Album {...album} handleClick={handleClick} key={album.id} />;
       })}
     </div>
   );
