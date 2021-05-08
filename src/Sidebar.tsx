@@ -1,4 +1,11 @@
 import React from "react";
+import { useLocation, useHistory } from "react-router-dom";
+
+const sidebarItems = [
+  { name: "Albums", path: "/albums" },
+  { name: "Artists", path: "/artists" },
+  { name: "Search", path: "/search" },
+];
 
 function Sidebar() {
   return (
@@ -8,15 +15,8 @@ function Sidebar() {
       </div>
       <div className="text-xl mt-5">
         <ul>
-          {["Albums", "Artists", "Search"].map((el) => {
-            return (
-              <li className="p-2 hover:bg-emerald-700 cursor-pointer">
-                <div className="flex">
-                  <UserCircleSvg />
-                  <p className="pl-3">{el}</p>
-                </div>
-              </li>
-            );
+          {sidebarItems.map((el) => {
+            return <Item {...el} />;
           })}
         </ul>
       </div>
@@ -25,6 +25,25 @@ function Sidebar() {
 }
 
 export default Sidebar;
+
+function Item({ name, path }: { name: string; path: string }) {
+  const { pathname } = useLocation();
+  const { push } = useHistory();
+
+  return (
+    <li
+    onClick={() => push(path)}
+      className={`p-2 hover:bg-emerald-600 ${
+        path === pathname && "bg-emerald-800"
+      } cursor-pointer`}
+    >
+      <div className="flex">
+        <UserCircleSvg />
+        <p className="pl-3">{name}</p>
+      </div>
+    </li>
+  );
+}
 
 function UserCircleSvg() {
   return (
