@@ -12,7 +12,7 @@ function Home() {
       import.meta.env.DEV && localStorage.setItem("token", token);
       import.meta.env.PROD && sessionStorage.setItem("token", token);
 
-      history.push("/player");
+      history.push("/albums");
     }
   }, []);
   return (

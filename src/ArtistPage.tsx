@@ -1,18 +1,19 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLazyQuery, useQuery } from "@apollo/client";
 
-import {
-  GET_ALBUMS,
-  GET_ALBUM_SONGS,
-  GET_ARTISTS,
-  GET_ARTIST_SONGS,
-} from "./queries";
-import Albums from "./Albums";
+import { GET_ARTISTS, GET_ARTIST_SONGS } from "./queries";
 import { songContext } from "./contexts/song";
 import Artists from "./Artists";
+import FilterInput from "./FilterInput";
+import useDebounce from "./hooks/useDebounce";
 
-function AlbumPage() {
+function ArtistPage() {
+  const [inputValue, setInputValue] = useState("");
+  const [filteredArtists, setFilteredArtists] = useState<Artist[]>([]);
+
   const { setSongs } = useContext(songContext);
+
+  const filter = useDebounce(inputValue, 1000);
 
   const { data, loading } = useQuery<{ artists: Artist[] }>(GET_ARTISTS);
   const [
@@ -39,13 +40,29 @@ function AlbumPage() {
     }
   }, [albumData]);
 
+  useEffect(() => {
+    setFilteredArtists(data.artists);
+  }, [data]);
+
+  useEffect(() => {
+    setFilteredArtists(
+      data.artists.filter((b) => {
+        if (filter === "") {
+          return true;
+        }
+        return b.name.toLowerCase().includes(filter.toLowerCase());
+      })
+    );
+  }, [filter]);
+
   return (
     <main className="container text-center m-auto px-5 font-cabin py-5 pb-24 min-h-screen">
+      <FilterInput value={inputValue} setter={setInputValue} />
       {!loading && (
-        <Artists artists={data.artists} handleClick={getAlbumSongs} />
+        <Artists artists={filteredArtists} handleClick={getAlbumSongs} />
       )}
     </main>
   );
 }
 
-export default AlbumPage;
+export default ArtistPage;
