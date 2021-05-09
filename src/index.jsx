@@ -1,6 +1,5 @@
 import React, { StrictMode } from "react";
 import { render } from "react-dom";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 import Router from "./Router";
@@ -32,5 +31,3 @@ function App() {
 }
 
 render(<App />, document.getElementById("root"));
-
-serviceWorkerRegistration.register();
