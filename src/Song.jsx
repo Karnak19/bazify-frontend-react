@@ -1,8 +1,6 @@
-import { useContext } from 'react';
+import React, { useContext } from "react";
 
-import { songContext } from './contexts/song';
-
-import styles from './styles/Song.module.scss';
+import { songContext } from "./contexts/song";
 
 const Song = ({ song, index }) => {
   const {
@@ -11,22 +9,26 @@ const Song = ({ song, index }) => {
     playIndex,
   } = useContext(songContext);
 
-  const isSelected = () => (id === song.id ? styles.playing : '');
+  const isSelected = () => (id === song.id ? "border border-pink-700" : "");
 
   return (
     <div
-      className={`${styles.song} ${isSelected()}`}
+      className={`flex flex-row p-1 m-1 md:m-0 md:h-full justify-start items-center rounded-lg bg-gray-700 cursor-pointer hover:bg-gray-800 ${isSelected()}`}
       onClick={() => {
         playIndex(index);
         setCurrentSong(song);
       }}
     >
-      <img src={song.album?.picture} alt={song.album?.title} />
+      <img
+        className="rounded-lg -m-1 object-contain h-10 md:h-full md:max-h-28"
+        src={song.album?.picture}
+        alt={song.album?.title}
+      />
       <div>
-        <p className={styles.title}>{song.title}</p>
-        <p className={styles.subtitle}>{song.artist?.name}</p>
+        <p className="text-base pl-4 font-chakra">{song.title}</p>
+        <p className="text-xxs pl-4 font-chakra">{song.artist?.name}</p>
       </div>
-      <div className={styles.duration}>{song.duration}</div>
+      <div className="ml-auto">{song.duration}</div>
     </div>
   );
 };

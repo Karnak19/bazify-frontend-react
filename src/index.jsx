@@ -1,28 +1,36 @@
-import { StrictMode } from 'react';
-import { render } from 'react-dom';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import React, { StrictMode } from "react";
+import { render } from "react-dom";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+import Router from "./Router";
 
-import Router from './Router';
+import "react-jinke-music-player/assets/index.css";
+import "./styles/index.css";
+import { SongsProvider } from "./contexts/song";
 
-import 'react-jinke-music-player/assets/index.css';
-import './styles/index.scss';
+const token = sessionStorage.getItem("token") || localStorage.getItem("token");
 
-const queryClient = new QueryClient();
+const client = new ApolloClient({
+  uri: import.meta.env.VITE_API_URL + "/graphql",
+  cache: new InMemoryCache(),
+  headers: {
+    authorization: token ? `Bearer ${token}` : "",
+  },
+});
 
 function App() {
   return (
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <Router />
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-      </QueryClientProvider>
+      <ApolloProvider client={client}>
+        <SongsProvider>
+          <Router />
+        </SongsProvider>
+      </ApolloProvider>
     </StrictMode>
   );
 }
 
-render(<App />, document.getElementById('root'));
+render(<App />, document.getElementById("root"));
 
 serviceWorkerRegistration.register();

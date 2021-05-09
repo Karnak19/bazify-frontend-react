@@ -1,7 +1,7 @@
-@import 'variables';
+@import "variables";
 
 .chakra {
-  font-family: 'Chakra Petch', sans-serif !important;
+  font-family: "Chakra Petch", sans-serif !important;
 }
 
 .container {
@@ -9,7 +9,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column-reverse;
-  font-family: 'Cabin', sans-serif;
+  font-family: "Cabin", sans-serif;
 
   .currentSong {
     display: flex;

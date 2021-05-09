@@ -1,15 +1,14 @@
-import { Song as ISong } from './interfaces/CurrentSong';
-import Song from './Song';
+import React from "react";
 
-import styles from './styles/Songs.module.scss';
+import Song from "./Song";
 
 interface IProps {
-  musics: ISong[];
+  musics: Song[];
 }
 
 const Songs = ({ musics }: IProps) => {
   return (
-    <div className={styles.list}>
+    <div className="flex flex-col md:grid md:grid-cols-3 md:gap-3 h-inh p-5 bg-gray-900 text-white overflow-scroll">
       {musics?.map((music, key = 0) => {
         return <Song song={music} index={key} key={key} />;
       })}
