@@ -22,6 +22,12 @@ function AlbumPage() {
   ] = useLazyQuery<{ album: Album }, { id: string }>(GET_ALBUM_SONGS);
 
   useEffect(() => {
+    if (!loading) {
+      setFilteredAlbums(data.albums);
+    }
+  }, [data]);
+
+  useEffect(() => {
     if (albumData && !albumLoading) {
       const { album } = albumData;
       setSongs(
@@ -41,18 +47,16 @@ function AlbumPage() {
   }, [albumData]);
 
   useEffect(() => {
-    setFilteredAlbums(data.albums);
-  }, [data]);
-
-  useEffect(() => {
-    setFilteredAlbums(
-      data.albums.filter((b) => {
-        if (filter === "") {
-          return true;
-        }
-        return b.title.toLowerCase().includes(filter.toLowerCase());
-      })
-    );
+    if (data && !loading) {
+      setFilteredAlbums(
+        data.albums.filter((b) => {
+          if (filter === "") {
+            return true;
+          }
+          return b.title.toLowerCase().includes(filter.toLowerCase());
+        })
+      );
+    }
   }, [filter]);
 
   return (
